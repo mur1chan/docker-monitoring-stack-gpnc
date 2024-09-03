@@ -14,7 +14,7 @@ x-common-labels: &default-labels
 
 services:
   grafana:
-    image: grafana/grafana:${GRAFANA_VERSION:-11.0.0}
+    image: grafana/grafana:11.0.0
     container_name: grafana
     restart: unless-stopped
     environment:
@@ -24,7 +24,7 @@ services:
       - GF_LOG_MODE=console
       - GF_LOG_LEVEL=critical
       - GF_PANELS_ENABLE_ALPHA=true
-      - GF_FEATURE_TOGGLES_ENABLE=accessControlOnCall lokiLogsDataplane
+      - GF_FEATURE_TOGGLES_ENABLE=accessControlOnCall,lokiLogsDataplane
       - GF_INSTALL_PLUGINS=grafana-polystat-panel,https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
     volumes:
       - ./configs/grafana/provisioning/dashboards.yml:/etc/grafana/provisioning/dashboards/provisioning-dashboards.yaml:ro
@@ -45,7 +45,7 @@ services:
     logging: *default-logging
 
   prometheus:
-    image: prom/prometheus:${PROMETHEUS_VERSION:-v2.42.0}
+    image: prom/prometheus:v2.42.0
     container_name: prometheus
     restart: unless-stopped
     command:
@@ -72,7 +72,7 @@ services:
     logging: *default-logging
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:${CADVISOR_VERSION:-v0.46.0}
+    image: gcr.io/cadvisor/cadvisor:v0.46.0
     container_name: cadvisor
     restart: unless-stopped
     privileged: true
@@ -89,7 +89,7 @@ services:
     logging: *default-logging
 
   node-exporter:
-    image: prom/node-exporter:${NODE_EXPORTER_VERSION:-v1.5.0}
+    image: prom/node-exporter:v1.5.0
     container_name: node-exporter
     restart: unless-stopped
     volumes:
@@ -108,7 +108,7 @@ services:
     logging: *default-logging
 
   alertmanager:
-    image: prom/alertmanager:${ALERTMANAGER_VERSION:-v0.25.0}
+    image: prom/alertmanager:v0.25.0
     container_name: alertmanager
     command:
       - '--config.file=/etc/alertmanager/config.yml'
@@ -126,7 +126,7 @@ services:
     logging: *default-logging
 
   redis:
-    image: redis:${REDIS_VERSION:-6}
+    image: redis:6
     container_name: redis
     ports:
       - 6379:6379
@@ -178,4 +178,3 @@ volumes:
 
 networks:
   monitoring:
-    name: monitoring
