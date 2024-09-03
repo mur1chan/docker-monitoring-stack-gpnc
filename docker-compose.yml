@@ -81,9 +81,7 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
-        # https://github.com/google/cadvisor/issues/1565#issuecomment-718812180
       - /var/run/docker.sock:/var/run/docker.sock
-      #- /dev/disk:/dev/disk:ro
     networks:
       - monitoring
     labels:
@@ -146,7 +144,8 @@ services:
     user: root
     ports:
       - 3100:3100
-    command: -config.file=/etc/loki/loki.yaml
+    command:
+      - '-config.file=/etc/loki/loki.yaml'
     volumes:
       - ./configs/loki/loki.yaml:/etc/loki/loki.yaml
       - ./configs/loki/rules.yaml:/etc/loki/rules/fake/loki-rules.yml
@@ -163,7 +162,8 @@ services:
       - ./configs/promtail/promtail.yaml:/etc/promtail/docker-config.yaml
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    command: -config.file=/etc/promtail/docker-config.yaml
+    command:
+      - '-config.file=/etc/promtail/docker-config.yaml'
     depends_on:
       - loki
     networks:
